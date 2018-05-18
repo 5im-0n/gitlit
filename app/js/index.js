@@ -1,5 +1,6 @@
 (function($) {
-	require('electron').ipcRenderer.on('ping', (event, message) => {
-		console.log(message) // Prints 'whoooooooh!'
-	})
+	let ipcRenderer = require('electron').ipcRenderer;
+	ipcRenderer.on('fileList', (event, files) => {
+		$('body').html(gitlit.templates.main({files: files}));
+	});
 })(jQuery);
