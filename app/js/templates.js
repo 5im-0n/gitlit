@@ -1,7 +1,7 @@
 window.gitlit = window.gitlit || {};
 gitlit.templates = {
 	main: ejs.compile(`
-		<table class="table">
+		<table class="table table-striped">
 		<tr>
 			<th>file</th>
 			<th>status</th>
@@ -9,18 +9,34 @@ gitlit.templates = {
 		</tr>
 
 		<% files.forEach((file) => { %>
-			<tr class="<%= file.lockedBy ? 'alert alert-danger' : '' %>">
+			<tr>
 				<td><%= file.file %></td>
 				<td><%= file.lockedBy ? file.lockedBy + ' (id: ' + file.id + ')' : 'not locked' %></td>
 				<td>
-					<a class="btn btn-<%= file.lockedBy ? 'danger' : 'primary' %>"
-						href="javascript:///">
-						<%= file.lockedBy ? 'Unlock' : 'Lock' %>
+					<a class="btn btn-primary js-lock"
+						href="javascript:///"
+						data-file="<%= file.file %>"
+						style="<%= file.lockedBy ? 'display: none;' : '' %>"
+					>
+						Lock
+					</a>
+					<a class="btn btn-danger js-unlock"
+						href="javascript:///"
+						data-file="<%= file.file %>"
+						style="<%= file.lockedBy ? '' : 'display: none;' %>"
+					>
+						Unlock
 					</a>
 				</td>
 			</tr>
 		<% }); %>
 
 		</table>
+
+		<div>
+			<a class="btn btn-secondary js-refresh" href="javascript:///">
+				Refresh
+			</a>
+		</div>
 		`)
 };

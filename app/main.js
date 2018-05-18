@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const url = require('url');
 const electronLocalshortcut = require('electron-localshortcut');
@@ -9,6 +9,7 @@ const args = require('minimist')(process.argv.slice(2), {
 	}
 });
 
+const repoDir = args._.join(' ');
 
 function getLfsFileList(dir, cb) {
 	exec('git lfs ls-files', {
@@ -19,9 +20,10 @@ function getLfsFileList(dir, cb) {
 			cb(error);
 			return;
 		}
+
+		let parsedFiles = [];
 		if (stdout) {
 			let files = stdout.split('\n');
-			let parsedFiles = [];
 			files.forEach((file) => {
 				file = file.split(' * ');
 				if (file[1]) {
@@ -29,6 +31,8 @@ function getLfsFileList(dir, cb) {
 				}
 			});
 
+			cb(null, parsedFiles);
+		} else {
 			cb(null, parsedFiles);
 		}
 	});
@@ -43,9 +47,10 @@ function getLfsLocks(dir, cb) {
 			cb(error);
 			return;
 		}
+
+		let parsedFiles = [];
 		if (stdout) {
 			let files = stdout.split('\n');
-			let parsedFiles = [];
 			files.forEach((file) => {
 				if (file) {
 					let fileName = file.split('\t')[0].trim();
@@ -59,6 +64,8 @@ function getLfsLocks(dir, cb) {
 				}
 			});
 
+			cb(null, parsedFiles);
+		} else {
 			cb(null, parsedFiles);
 		}
 	});
@@ -93,8 +100,16 @@ function createWindow() {
 	win.webContents.on('did-finish-load', () => {
 		console.log('getting file list and lock status...');
 
-		getLfsFileList(args._.join(' '), (err, files) => {
-			getLfsLocks(args._.join(' '), (err, lockedFiles) => {
+		getLfsFileList(repoDir, (err, files) => {
+			if (err) {
+				console.error(err);
+				process.exit(1);
+			}
+			getLfsLocks(repoDir, (err, lockedFiles) => {
+				if (err) {
+					console.error(err);
+					process.exit(1);
+				}
 				let allFiles = [];
 
 				files.forEach((file) => {
@@ -112,5 +127,51 @@ function createWindow() {
 		});
 	});
 }
+
+ipcMain.on('unlock', (event, file) => {
+	exec('git lfs unlock "' + file + '"', {
+		cwd: repoDir
+	},
+	(error, stdout, stderr) => {
+		let notification = {
+			message:  (error && error.message) || stderr,
+			type: 'error'
+		};
+
+		if (stdout) {
+			notification = {
+				file: file,
+				event: 'unlock',
+				message: stdout,
+				type: 'info'
+			};
+		}
+
+		win.webContents.send('notification', notification);
+	});
+});
+
+ipcMain.on('lock', (event, file) => {
+	exec('git lfs lock "' + file + '"', {
+		cwd: repoDir
+	},
+	(error, stdout, stderr) => {
+		let notification = {
+			message:  (error && error.message) || stderr,
+			type: 'error'
+		};
+
+		if (stdout) {
+			notification = {
+				file: file,
+				event: 'lock',
+				message: stdout,
+				type: 'info'
+			};
+		}
+
+		win.webContents.send('notification', notification);
+	});
+});
 
 app.on('ready', createWindow);
