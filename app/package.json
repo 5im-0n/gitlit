@@ -1,0 +1,24 @@
+{
+  "name": "gitlit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "ejs": "^2.6.1",
+    "electron-localshortcut": "^3.1.0",
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+    "electron": "^2.0.1"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.e.tern.al/s2/gitlit"
+  },
+  "author": "",
+  "license": "ISC"
+}

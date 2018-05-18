@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>gitlit</title>
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="node_modules/jquery/dist/jquery.js"></script>
+	<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="node_modules/ejs/ejs.js"></script>
+	<script src="js/templates.js"></script>
+	<script src="js/index.js"></script>
+
+	<link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+
+	<script>
+		$('body').html(gitlit.templates.main());
+	</script>
+</body>
+</html>
