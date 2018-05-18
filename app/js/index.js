@@ -27,10 +27,14 @@
 		if (notification.event && notification.event === 'unlock') {
 			$('[data-file="' + notification.file + '"].js-unlock').hide();
 			$('[data-file="' + notification.file + '"].js-lock').show();
+			let text = 'not locked';
+			$('[data-file="' + notification.file + '"]').parent().prev().text(text);
 		}
 		if (notification.event && notification.event === 'lock') {
 			$('[data-file="' + notification.file + '"].js-lock').hide();
 			$('[data-file="' + notification.file + '"].js-unlock').show();
+			let text = notification.data.owner.name + ' (id: ' + notification.data.id + ')';
+			$('[data-file="' + notification.file + '"]').parent().prev().text(text);
 		}
 	});
 

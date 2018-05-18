@@ -33,7 +33,7 @@ gitlit.templates = {
 
 		</table>
 
-		<div>
+		<div class="float-right">
 			<a class="btn btn-secondary js-refresh" href="javascript:///">
 				Refresh
 			</a>

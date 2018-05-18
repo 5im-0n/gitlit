@@ -142,7 +142,6 @@ ipcMain.on('unlock', (event, file) => {
 			notification = {
 				file: file,
 				event: 'unlock',
-				message: stdout,
 				type: 'info'
 			};
 		}
@@ -152,7 +151,7 @@ ipcMain.on('unlock', (event, file) => {
 });
 
 ipcMain.on('lock', (event, file) => {
-	exec('git lfs lock "' + file + '"', {
+	exec('git lfs lock --json "' + file + '"', {
 		cwd: repoDir
 	},
 	(error, stdout, stderr) => {
@@ -165,7 +164,7 @@ ipcMain.on('lock', (event, file) => {
 			notification = {
 				file: file,
 				event: 'lock',
-				message: stdout,
+				data: JSON.parse(stdout),
 				type: 'info'
 			};
 		}
