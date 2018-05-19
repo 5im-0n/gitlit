@@ -25,10 +25,10 @@ The code is very easy. Just clone the repo and have look!
 Use the `.jscrc` for formatting the code and keep it clean and consistent.
 
 There are just some js libraries:
-- [ejs](https://ejs.co/) is used for templating. The templates are in `app/js/templates.js`.
+- [ejs](http://ejs.co/) is used for templating. The templates are in `app/js/templates.js`.
 - [sorttable.js](http://www.kryogenix.org/code/browser/sorttable/) to sort the table containing th files.
 - [jQuery](https://jquery.com/), because it's still cool to have it, even if everyone says it's dead and we should do without.
-- [bootstrap](https://getbootstrap.com/) for the layout
+- [Bootstrap](https://getbootstrap.com/) for the layout
 - [PNotify](https://github.com/sciactive/pnotify) for generic notifications
 
 ## license
