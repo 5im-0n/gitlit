@@ -1,7 +1,7 @@
 window.gitlit = window.gitlit || {};
 gitlit.templates = {
 	main: ejs.compile(`
-		<table class="table table-striped">
+		<table class="table table-striped sortable js-filestable">
 		<tr>
 			<th>file</th>
 			<th>status</th>

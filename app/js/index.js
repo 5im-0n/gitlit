@@ -9,6 +9,9 @@
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
 		$('.js-container').html(gitlit.templates.main({files: files}));
+		sorttable.makeSortable($('.js-filestable')[0]);
+		var myTH = document.getElementsByTagName("th")[0];
+		sorttable.innerSortFunction.apply(myTH, []);
 	});
 
 	ipcRenderer.on('isNoGitLfsRepo', (event, repoDir) => {

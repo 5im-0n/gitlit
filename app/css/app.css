@@ -31,3 +31,8 @@
 .search-active {
     visibility: visible;
 }
+
+/* Sortable tables */
+table.sortable thead {
+    cursor: pointer;
+}
