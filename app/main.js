@@ -3,7 +3,7 @@ const path = require('path');
 const url = require('url');
 const electronLocalshortcut = require('electron-localshortcut');
 const exec = require('child_process').exec;
-const args = require('minimist')(process.argv.slice(2), {
+const args = require('minimist')(process.defaultApp ? process.argv.slice(2) : process.argv.slice(1), {
 	default: {
 		_: process.cwd()
 	}
@@ -98,7 +98,7 @@ function createWindow() {
 	});
 
 	win.webContents.on('did-finish-load', () => {
-		console.log('getting file list and lock status...');
+		console.log('getting file list and lock status in ' + repoDir + '...');
 
 		getLfsFileList(repoDir, (err, files) => {
 			if (err) {
@@ -178,3 +178,9 @@ ipcMain.on('lock', (event, file) => {
 });
 
 app.on('ready', createWindow);
+
+app.on('window-all-closed', function() {
+	if (process.platform != 'darwin') {
+		app.quit();
+	}
+});
