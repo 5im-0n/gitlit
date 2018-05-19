@@ -38,5 +38,10 @@ gitlit.templates = {
 				Refresh
 			</a>
 		</div>
-		`)
+	`),
+	isNoGitLfsRepo: ejs.compile(`
+		<div class="alert alert-danger">
+			<%= repoDir %> is not a git lfs repo.
+		</div>
+	`)
 };

@@ -103,12 +103,16 @@ function createWindow() {
 		getLfsFileList(repoDir, (err, files) => {
 			if (err) {
 				console.error(err);
-				process.exit(1);
+
+				win.webContents.send('isNoGitLfsRepo', repoDir);
+				return;
 			}
 			getLfsLocks(repoDir, (err, lockedFiles) => {
 				if (err) {
 					console.error(err);
-					process.exit(1);
+
+					win.webContents.send('isNoGitLfsRepo', repoDir);
+					return;
 				}
 				let allFiles = [];
 

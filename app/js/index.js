@@ -6,6 +6,10 @@
 		$('.js-container').html(gitlit.templates.main({files: files}));
 	});
 
+	ipcRenderer.on('isNoGitLfsRepo', (event, repoDir) => {
+		$('.js-container').html(gitlit.templates.isNoGitLfsRepo({repoDir: repoDir}));
+	});
+
 	ipcRenderer.on('notification', (event, notification) => {
 		if (notification.message) {
 			var notice = PNotify.alert({
