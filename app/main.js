@@ -9,7 +9,7 @@ const args = require('minimist')(process.defaultApp ? process.argv.slice(2) : pr
 	}
 });
 
-const repoDir = args._.join(' ');
+const repoDir = path.normalize(args._.join(' '));
 
 function getLfsFileList(dir, cb) {
 	exec('git lfs ls-files', {
@@ -98,7 +98,7 @@ function createWindow() {
 	});
 
 	win.webContents.on('did-finish-load', () => {
-		console.log('getting file list and lock status in ' + repoDir + '...');
+		win.webContents.send('repoDir', repoDir);
 
 		getLfsFileList(repoDir, (err, files) => {
 			if (err) {

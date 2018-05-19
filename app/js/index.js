@@ -9,13 +9,17 @@
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
 		if (files && files.length > 0) {
-			$('.js-container').html(gitlit.templates.main({files: files}));
+			$('.files-table-container').html(gitlit.templates.files({files: files}));
 			sorttable.makeSortable($('.js-filestable')[0]);
 			var myTH = document.getElementsByTagName("th")[0];
 			sorttable.innerSortFunction.apply(myTH, []);
 		} else {
-			$('.js-container').html(gitlit.templates.noGitLfsFiles());
+			$('.files-table-container').html(gitlit.templates.noGitLfsFiles());
 		}
+	});
+
+	ipcRenderer.on('repoDir', (event, repoDir) => {
+		$('.js-repo-dir').text('current repo dir: ' + repoDir).show();
 	});
 
 	ipcRenderer.on('isNoGitLfsRepo', (event, repoDir) => {
@@ -84,5 +88,6 @@
 
 	//startup
 	PNotify.defaults.styling = 'bootstrap4'; // Bootstrap version 4
+	$('.js-container').html(gitlit.templates.main());
 
 })(jQuery);

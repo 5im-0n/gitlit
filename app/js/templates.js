@@ -1,6 +1,14 @@
 window.gitlit = window.gitlit || {};
 gitlit.templates = {
 	main: ejs.compile(`
+		<div class="alert alert-success js-repo-dir" style="display:none;"></div>
+		<div class="files-table-container">
+			<div class="alert alert-primary" role="alert">
+				Getting file list...
+			</div>
+		</div>
+	`),
+	files: ejs.compile(`
 		<table class="table table-striped sortable js-filestable">
 		<tr>
 			<th>file</th>
