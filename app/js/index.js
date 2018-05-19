@@ -1,5 +1,8 @@
 (function($) {
-	let ipcRenderer = require('electron').ipcRenderer;
+	const ipcRenderer = require('electron').ipcRenderer;
+	const searchInPage = require('electron-in-page-search').default;
+	const remote = require('electron').remote;
+
 
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
@@ -59,6 +62,13 @@
 		window.location.reload(false);
 	});
 
+	$(document).on('keypress', (ev) => {
+		//ctrl + f
+		if (ev.ctrlKey && ev.charCode == 6) {
+			let inPageSearch = searchInPage(remote.getCurrentWebContents());
+			inPageSearch.openSearchWindow();
+		}
+	});
 
 	//startup
 	PNotify.defaults.styling = 'bootstrap4'; // Bootstrap version 4
