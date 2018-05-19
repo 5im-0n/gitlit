@@ -3,6 +3,8 @@
 	const searchInPage = require('electron-in-page-search').default;
 	const remote = require('electron').remote;
 
+	let inPageSearch = searchInPage();
+
 
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
@@ -65,8 +67,12 @@
 	$(document).on('keypress', (ev) => {
 		//ctrl + f
 		if (ev.ctrlKey && ev.charCode == 6) {
-			let inPageSearch = searchInPage(remote.getCurrentWebContents());
-			inPageSearch.openSearchWindow();
+			if (inPageSearch && inPageSearch.opened) {
+				inPageSearch.closeSearchWindow();
+			} else {
+				inPageSearch.searchTarget = remote.getCurrentWebContents();
+				inPageSearch.openSearchWindow();
+			}
 		}
 	});
 
