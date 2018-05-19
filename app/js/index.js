@@ -3,7 +3,7 @@
 	const searchInPage = require('electron-in-page-search').default;
 	const remote = require('electron').remote;
 
-	let inPageSearch = searchInPage();
+	const inPageSearch = searchInPage(remote.getCurrentWebContents());
 
 
 	//events
@@ -70,7 +70,6 @@
 			if (inPageSearch && inPageSearch.opened) {
 				inPageSearch.closeSearchWindow();
 			} else {
-				inPageSearch.searchTarget = remote.getCurrentWebContents();
 				inPageSearch.openSearchWindow();
 			}
 		}
