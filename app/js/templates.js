@@ -5,7 +5,7 @@ gitlit.templates = {
 		<tr>
 			<th>file</th>
 			<th>status</th>
-			<th>action</th>
+			<th class="sorttable_nosort">action</th>
 		</tr>
 
 		<% files.forEach((file) => { %>
@@ -42,6 +42,11 @@ gitlit.templates = {
 	isNoGitLfsRepo: ejs.compile(`
 		<div class="alert alert-danger">
 			<%= repoDir %> is not a git lfs repo.
+		</div>
+	`),
+	noGitLfsFiles: ejs.compile(`
+		<div class="alert alert-info">
+			no files tracked with lfs here.
 		</div>
 	`)
 };

@@ -8,10 +8,14 @@
 
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
-		$('.js-container').html(gitlit.templates.main({files: files}));
-		sorttable.makeSortable($('.js-filestable')[0]);
-		var myTH = document.getElementsByTagName("th")[0];
-		sorttable.innerSortFunction.apply(myTH, []);
+		if (files && files.length > 0) {
+			$('.js-container').html(gitlit.templates.main({files: files}));
+			sorttable.makeSortable($('.js-filestable')[0]);
+			var myTH = document.getElementsByTagName("th")[0];
+			sorttable.innerSortFunction.apply(myTH, []);
+		} else {
+			$('.js-container').html(gitlit.templates.noGitLfsFiles());
+		}
 	});
 
 	ipcRenderer.on('isNoGitLfsRepo', (event, repoDir) => {
