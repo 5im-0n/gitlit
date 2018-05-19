@@ -10,39 +10,42 @@ gitlit.templates = {
 	`),
 	files: ejs.compile(`
 		<table class="table table-striped sortable js-filestable">
-		<tr>
-			<th>file</th>
-			<th>status</th>
-			<th class="sorttable_nosort">action</th>
-		</tr>
+			<thead class="thead-light">
+				<tr>
+					<th>file</th>
+					<th>status</th>
+					<th class="sorttable_nosort">action</th>
+				</tr>
+			<thead>
 
-		<% files.forEach((file) => { %>
-			<tr>
-				<td><%= file.file %></td>
-				<td><%= file.lockedBy ? file.lockedBy + ' (id: ' + file.id + ')' : 'not locked' %></td>
-				<td>
-					<a class="btn btn-primary js-lock"
-						href="javascript:///"
-						data-file="<%= file.file %>"
-						style="<%= file.lockedBy ? 'display: none;' : '' %>"
-					>
-						Lock
-					</a>
-					<a class="btn btn-danger js-unlock"
-						href="javascript:///"
-						data-file="<%= file.file %>"
-						style="<%= file.lockedBy ? '' : 'display: none;' %>"
-					>
-						Unlock
-					</a>
-				</td>
-			</tr>
-		<% }); %>
-
+			<tbody>
+			<% files.forEach((file) => { %>
+				<tr>
+					<td><%= file.file %></td>
+					<td><%= file.lockedBy ? file.lockedBy + ' (id: ' + file.id + ')' : 'not locked' %></td>
+					<td>
+						<a class="btn btn-primary btn-sm js-lock"
+							href="javascript:///"
+							data-file="<%= file.file %>"
+							style="<%= file.lockedBy ? 'display: none;' : '' %>"
+						>
+							Lock
+						</a>
+						<a class="btn btn-danger btn-sm js-unlock"
+							href="javascript:///"
+							data-file="<%= file.file %>"
+							style="<%= file.lockedBy ? '' : 'display: none;' %>"
+						>
+							Unlock
+						</a>
+					</td>
+				</tr>
+			<% }); %>
+			</tbody>
 		</table>
 
 		<div class="float-right">
-			<a class="btn btn-secondary js-refresh" href="javascript:///">
+			<a class="btn btn-secondary btn-sm js-refresh" href="javascript:///">
 				Refresh
 			</a>
 		</div>
