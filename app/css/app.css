@@ -36,6 +36,7 @@
 table.sortable thead {
     cursor: pointer;
 }
+
 table.sortable .sorttable_nosort {
     cursor: default;
 }
