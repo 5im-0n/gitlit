@@ -31,6 +31,17 @@ There are just some js libraries:
 - [Bootstrap](https://getbootstrap.com/) for the layout
 - [PNotify](https://github.com/sciactive/pnotify) for generic notifications
 
+### run the app
+```
+cd app
+npm start
+```
+
+### make a release
+```
+./makedist.sh
+```
+
 ## license
 
 ISC
