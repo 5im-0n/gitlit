@@ -84,6 +84,11 @@
 				inPageSearch.openSearchWindow();
 			}
 		}
+
+		//ctrl + r
+		if (ev.ctrlKey && ev.keyCode == 18) {
+			window.location.reload(false);
+		}
 	});
 
 	//startup
