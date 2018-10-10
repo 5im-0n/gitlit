@@ -13,6 +13,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron-packager": "^12.1.0"
+    "electron-packager": "^12.2.0"
   }
 }
