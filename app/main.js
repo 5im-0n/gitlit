@@ -12,7 +12,7 @@ const args = require('minimist')(process.defaultApp ? process.argv.slice(2) : pr
 const repoDir = path.resolve(path.normalize(args._.join(' ')));
 
 function getLfsFileList(dir, cb) {
-	exec('git lfs ls-files', {
+	exec('git lfs ls-files', {maxBuffer: 1024 * 1024}, {
 		cwd: dir
 	},
 	(error, stdout, stderr) => {
@@ -133,7 +133,7 @@ function createWindow() {
 }
 
 ipcMain.on('unlock', (event, file) => {
-	exec('git lfs unlock "' + file + '"', {
+	exec('git lfs unlock "' + file + '"', {maxBuffer: 1024 * 1024}, {
 		cwd: repoDir
 	},
 	(error, stdout, stderr) => {
@@ -155,7 +155,7 @@ ipcMain.on('unlock', (event, file) => {
 });
 
 ipcMain.on('lock', (event, file) => {
-	exec('git lfs lock --json "' + file + '"', {
+	exec('git lfs lock --json "' + file + '"', {maxBuffer: 1024 * 1024}, {
 		cwd: repoDir
 	},
 	(error, stdout, stderr) => {
