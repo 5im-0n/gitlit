@@ -26,14 +26,19 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: yarn install
+      - run: npm install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
+      # run build
+      - run: sudo dpkg --add-architecture i386
+      - run: sudo add-apt-repository -y ppa:ubuntu-wine/ppa
+      - run: sudo apt-get update
+      - run: echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
+      - run: sudo apt-get install -y wine
       - run: bash makedist.sh
       - store_artifacts:
-          path: /dist
+          path: ~/repo/dist
