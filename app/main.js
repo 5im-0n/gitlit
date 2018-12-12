@@ -12,7 +12,8 @@ const args = require('minimist')(process.defaultApp ? process.argv.slice(2) : pr
 const repoDir = path.resolve(path.normalize(args._.join(' ')));
 
 function getLfsFileList(dir, cb) {
-	exec('git lfs ls-files', {maxBuffer: 1024 * 1024}, {
+	exec('git lfs ls-files', {
+		maxBuffer: 1024 * 1024,
 		cwd: dir
 	},
 	(error, stdout, stderr) => {
@@ -25,9 +26,12 @@ function getLfsFileList(dir, cb) {
 		if (stdout) {
 			let files = stdout.split('\n');
 			files.forEach((file) => {
-				file = file.split(' * ');
-				if (file[1]) {
-					parsedFiles.push(file[1].trim());
+				let pos = file.search(/ \* | \- /);
+				if (pos) {
+					file = file.substring(pos + 3);
+					if (file) {
+						parsedFiles.push(file.trim());
+					}
 				}
 			});
 
@@ -40,6 +44,7 @@ function getLfsFileList(dir, cb) {
 
 function getLfsLocks(dir, cb) {
 	exec('git lfs locks', {
+		maxBuffer: 1024 * 1024,
 		cwd: dir
 	},
 	(error, stdout, stderr) => {
@@ -133,7 +138,8 @@ function createWindow() {
 }
 
 ipcMain.on('unlock', (event, file) => {
-	exec('git lfs unlock "' + file + '"', {maxBuffer: 1024 * 1024}, {
+	exec('git lfs unlock "' + file + '"', {
+		maxBuffer: 1024 * 1024,
 		cwd: repoDir
 	},
 	(error, stdout, stderr) => {
@@ -155,7 +161,8 @@ ipcMain.on('unlock', (event, file) => {
 });
 
 ipcMain.on('lock', (event, file) => {
-	exec('git lfs lock --json "' + file + '"', {maxBuffer: 1024 * 1024}, {
+	exec('git lfs lock --json "' + file + '"', {
+		maxBuffer: 1024 * 1024,
 		cwd: repoDir
 	},
 	(error, stdout, stderr) => {
