@@ -9,7 +9,7 @@ const args = require('minimist')(process.defaultApp ? process.argv.slice(3) : pr
 	}
 });
 
-const repoDir = path.resolve(path.normalize(args._[0]));
+const repoDir = path.resolve(path.normalize(args._.join(' ')));
 
 function getLfsFileList(dir, cb) {
 	exec('git lfs ls-files', {
