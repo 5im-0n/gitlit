@@ -3,13 +3,13 @@ const path = require('path');
 const url = require('url');
 const electronLocalshortcut = require('electron-localshortcut');
 const exec = require('child_process').exec;
-const args = require('minimist')(process.defaultApp ? process.argv.slice(2) : process.argv.slice(1), {
+const args = require('minimist')(process.defaultApp ? process.argv.slice(3) : process.argv.slice(1), {
 	default: {
 		_: process.cwd()
 	}
 });
 
-const repoDir = path.resolve(path.normalize(args._.join(' ')));
+const repoDir = path.resolve(path.normalize(args._[0]));
 
 function getLfsFileList(dir, cb) {
 	exec('git lfs ls-files', {
