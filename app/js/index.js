@@ -1,10 +1,5 @@
 (function($) {
 	const ipcRenderer = require('electron').ipcRenderer;
-	const searchInPage = require('electron-in-page-search').default;
-	const remote = require('electron').remote;
-
-	const inPageSearch = searchInPage(remote.getCurrentWebContents());
-
 
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
@@ -76,15 +71,6 @@
 	});
 
 	$(document).on('keypress', (ev) => {
-		//ctrl + f
-		if (ev.ctrlKey && ev.charCode == 6) {
-			if (inPageSearch && inPageSearch.opened) {
-				inPageSearch.closeSearchWindow();
-			} else {
-				inPageSearch.openSearchWindow();
-			}
-		}
-
 		//ctrl + r
 		if (ev.ctrlKey && ev.keyCode == 18) {
 			window.location.reload(false);
