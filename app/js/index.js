@@ -1,5 +1,8 @@
 (function($) {
 	const ipcRenderer = require('electron').ipcRenderer;
+	const remote = require('electron').remote;
+	const electronFind = require('electron-find');
+	let findInPage = new electronFind.FindInPage(remote.getCurrentWebContents());
 
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
@@ -71,6 +74,11 @@
 	});
 
 	$(document).on('keypress', (ev) => {
+		//ctrl + f
+		if (ev.ctrlKey && ev.charCode == 6) {
+			findInPage.openFindWindow();
+		}
+
 		//ctrl + r
 		if (ev.ctrlKey && ev.keyCode == 18) {
 			window.location.reload(false);
