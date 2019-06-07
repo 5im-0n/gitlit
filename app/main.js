@@ -12,7 +12,7 @@ const args = require('minimist')(process.defaultApp ? process.argv.slice(3) : pr
 const repoDir = path.resolve(path.normalize(args._.join(' ')));
 
 function getLfsFileList(dir, cb) {
-	exec('git lfs ls-files', {
+	exec('git ls-files | git check-attr --stdin lockable', {
 		maxBuffer: 1024 * 1024,
 		cwd: dir
 	},
@@ -26,10 +26,11 @@ function getLfsFileList(dir, cb) {
 		if (stdout) {
 			let files = stdout.split('\n');
 			files.forEach((file) => {
-				let pos = file.search(/ \* | \- /);
-				if (pos) {
-					file = file.substring(pos + 3);
-					if (file) {
+				let pos = file.split(': lockable: ');
+				if (pos && pos.length === 2) {
+					file = pos[0];
+					status = pos[1];
+					if (file && status === 'set') {
 						parsedFiles.push(file.trim());
 					}
 				}
