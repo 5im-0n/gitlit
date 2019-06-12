@@ -10,6 +10,7 @@ const args = require('minimist')(process.defaultApp ? process.argv.slice(3) : pr
 });
 
 const repoDir = path.resolve(path.normalize(args._.join(' ')));
+let repoRootDir = repoDir;
 
 function getLfsFileList(dir, cb) {
 	exec('git ls-files | git check-attr --stdin lockable', {
@@ -31,7 +32,7 @@ function getLfsFileList(dir, cb) {
 					file = pos[0];
 					status = pos[1];
 					if (file && status === 'set') {
-						parsedFiles.push(file.trim());
+						parsedFiles.push(path.normalize(file.trim()));
 					}
 				}
 			});
@@ -59,7 +60,7 @@ function getLfsLocks(dir, cb) {
 			let files = stdout.split('\n');
 			files.forEach((file) => {
 				if (file) {
-					let fileName = file.split('\t')[0].trim();
+					let fileName = path.normalize(file.split('\t')[0].trim());
 					let lockedBy = file.split('\t')[1].trim();
 					let id = file.split('ID:')[1].trim();
 					parsedFiles.push({
@@ -121,12 +122,13 @@ function createWindow() {
 					return;
 				}
 				let allFiles = [];
+				let repoDirWithoutRoot = repoDir === repoRootDir ? '' : repoDir.replace(path.normalize(repoRootDir + '/'), '');
 
 				files.forEach((file) => {
 					const t = {
 						file: file,
-						lockedBy: getArrayObjectByKey(lockedFiles, 'file', file, 'lockedBy'),
-						id: getArrayObjectByKey(lockedFiles, 'file', file, 'id')
+						lockedBy: getArrayObjectByKey(lockedFiles, 'file', path.normalize(repoDirWithoutRoot ? repoDirWithoutRoot + '/' + file : file), 'lockedBy'),
+						id: getArrayObjectByKey(lockedFiles, 'file', path.normalize(repoDirWithoutRoot ? repoDirWithoutRoot + '/' + file : file), 'id')
 					};
 
 					allFiles.push(t);
@@ -185,7 +187,23 @@ ipcMain.on('lock', (event, file) => {
 	});
 });
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+	exec('git rev-parse --show-toplevel', {
+		maxBuffer: 1024 * 1024,
+		cwd: repoDir
+	},
+	(error, stdout, stderr) => {
+		if (error) {
+			console.error(error);
+		}
+
+		if (stdout) {
+			repoRootDir = path.normalize(stdout.replace(/\n/g, ''));
+		}
+
+		createWindow();
+	});
+});
 
 app.on('window-all-closed', function() {
 	if (process.platform != 'darwin') {
