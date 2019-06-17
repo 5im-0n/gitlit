@@ -14,5 +14,6 @@
   "license": "ISC",
   "devDependencies": {
     "electron-packager": "^12.2.0"
-  }
+  },
+  "keywords": ["git", "lfs", "locking", "git-locks"]
 }
