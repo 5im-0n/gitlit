@@ -33,7 +33,6 @@ There are just some js libraries:
 
 ### run the app
 ```
-cd app
 npm install
 npm start
 ```
