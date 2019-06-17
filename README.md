@@ -1,4 +1,4 @@
-# gitlit
+# ![gitlit](build/icon.png)
 
 gitlit is a very simple desktop app that allows you to handle [git lfs file locks](https://github.com/git-lfs/git-lfs/wiki/File-Locking).
 
