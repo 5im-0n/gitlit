@@ -5,20 +5,20 @@
   "main": "app/main.js",
   "build": {
     "appId": "s2.gitlit",
-    "win": {
+    "linux": {
       "target": [
         {
-          "target": "zip",
+          "target": "tar.gz",
           "arch": [
             "x64"
           ]
         }
       ]
     },
-    "linux": {
+    "win": {
       "target": [
         {
-          "target": "tar.gz",
+          "target": "zip",
           "arch": [
             "x64"
           ]
@@ -45,8 +45,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "pack": "electron-builder --linux --win --dir",
+    "dist": "electron-builder --linux --win"
   },
   "repository": {
     "type": "git",
