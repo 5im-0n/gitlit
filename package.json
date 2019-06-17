@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.e.tern.al:22022/s2/gitlit.git"
+    "url": "https://github.com/S2-/gitlit"
   },
   "author": "",
   "license": "ISC",
