@@ -8,9 +8,9 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Electron Main",
-			"runtimeExecutable": "${workspaceFolder}/app/node_modules/.bin/electron",
+			"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
 			//"program": "${workspaceFolder}/app/main.js",
-			"args": ["${workspaceFolder}/app/main.js", "C:\\Temp\\mobs"]
+			"args": ["${workspaceFolder}/app/main.js", "C:\\Temp\\test"]
 		}
 	]
 }

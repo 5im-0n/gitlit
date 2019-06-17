@@ -1,0 +1,33 @@
+{"parserOptions":
+	{"ecmaVersion": 6},
+	"rules": {
+		"quotes": [2, "single", {"allowTemplateLiterals": true}],
+		"curly": [2, "all"],
+		"keyword-spacing": [2, {"overrides": {"else": {"before": true}, "catch": {"before": true, "after": false}}}],
+		"space-before-blocks": [2, "always"],
+		"wrap-iife": [2, "inside"],
+		"space-before-function-paren": [2, "never"],
+		"one-var": [2, "never"],
+		"vars-on-top": 0, "no-empty": [2, {"allowEmptyCatch": true}],
+		"array-bracket-spacing": [2, "never"],
+		"space-in-parens": [2, "never"],
+		"no-underscore-dangle": 0,
+		"comma-style": [2, "last"],
+		"comma-spacing": [2, {"before": false, "after": true}],
+		"space-unary-ops": [2, {"words": false, "nonwords": false}],
+		"no-multi-spaces": 2,
+		"space-infix-ops": 2,
+		"no-with": 2,
+		"indent": [2, "tab", {"SwitchCase": 1, "FunctionExpression": {"body": 1, "parameters": 1}, "MemberExpression": 0}],
+		"no-mixed-spaces-and-tabs": 2,
+		"no-trailing-spaces": 2,
+		"comma-dangle": [2, "never"],
+		"semi": [2, "always"],
+		"brace-style": [2, "1tbs", {"allowSingleLine": true}],
+		"eol-last": 2,
+		"dot-notation": 0,
+		"no-multi-str": 2,
+		"key-spacing": [2, {"afterColon": true}],
+		"func-call-spacing": [2, "never"]
+	}
+}

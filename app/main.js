@@ -98,7 +98,7 @@ function createWindow() {
 		pathname: path.join(__dirname, 'index.html'),
 		protocol: 'file:',
 		slashes: true
-	}))
+	}));
 
 	electronLocalshortcut.register(win, 'F12', () => {
 		win.webContents.toggleDevTools();
@@ -147,7 +147,7 @@ ipcMain.on('unlock', (event, file) => {
 	},
 	(error, stdout, stderr) => {
 		let notification = {
-			message:  (error && error.message) || stderr,
+			message: (error && error.message) || stderr,
 			type: 'error'
 		};
 
@@ -170,7 +170,7 @@ ipcMain.on('lock', (event, file) => {
 	},
 	(error, stdout, stderr) => {
 		let notification = {
-			message:  (error && error.message) || stderr,
+			message: (error && error.message) || stderr,
 			type: 'error'
 		};
 
