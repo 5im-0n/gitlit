@@ -22,7 +22,7 @@ If no folder is specified, gitlit looks at the current path.
 ## contribute
 
 The code is very easy. Just clone the repo and have look!
-Use the `.jscrc` for formatting the code and keep it clean and consistent.
+Use the `.eslintrc.json` for formatting the code and keep it clean and consistent.
 
 There are just some js libraries:
 - [ejs](http://ejs.co/) is used for templating. The templates are in `app/js/templates.js`.
@@ -34,12 +34,14 @@ There are just some js libraries:
 ### run the app
 ```
 cd app
+npm install
 npm start
 ```
 
 ### make a release
 ```
-./makedist.sh
+npm install
+npm run dist
 ```
 
 ## license
