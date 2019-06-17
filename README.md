@@ -1,4 +1,4 @@
-# <img src="build/icon.png" alt="gitlit" width="300" height="300">
+# <img src="logo/logo.png" alt="gitlit">
 
 gitlit is a very simple desktop app that allows you to handle [git lfs file locks](https://github.com/git-lfs/git-lfs/wiki/File-Locking).
 
