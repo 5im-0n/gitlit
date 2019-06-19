@@ -19,6 +19,8 @@ gitlit /home/s2/myApp
 
 If no folder is specified, gitlit looks at the current path.
 
+You can also drag&drop a folder inside the main window.
+
 ## contribute
 
 The code is very easy. Just clone the repo and have look!
