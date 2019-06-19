@@ -9,7 +9,8 @@ const args = require('minimist')(process.defaultApp ? process.argv.slice(3) : pr
 	}
 });
 
-const repoDir = path.resolve(path.normalize(args._.join(' ')));
+let win;
+let repoDir = path.resolve(path.normalize(args._.join(' ')));
 let repoRootDir = repoDir;
 
 function getLfsFileList(dir, cb) {
@@ -86,7 +87,42 @@ function getArrayObjectByKey(array, key, value, defaultKeyValue) {
 		return defaultKeyValue ? o[0][defaultKeyValue] : o[0];
 	}
 	return undefined;
-}
+};
+
+function loadRepoPage() {
+	win.webContents.send('repoDir', repoDir);
+
+	getLfsFileList(repoDir, (err, files) => {
+		if (err) {
+			console.error(err);
+
+			win.webContents.send('isNoGitLfsRepo', repoDir);
+			return;
+		}
+		getLfsLocks(repoDir, (err, lockedFiles) => {
+			if (err) {
+				console.error(err);
+
+				win.webContents.send('isNoGitLfsRepo', repoDir);
+				return;
+			}
+			let allFiles = [];
+			let repoDirWithoutRoot = repoDir === repoRootDir ? '' : repoDir.replace(path.normalize(repoRootDir + '/'), '');
+
+			files.forEach((file) => {
+				const t = {
+					file: file,
+					lockedBy: getArrayObjectByKey(lockedFiles, 'file', path.normalize(repoDirWithoutRoot ? repoDirWithoutRoot + '/' + file : file), 'lockedBy'),
+					id: getArrayObjectByKey(lockedFiles, 'file', path.normalize(repoDirWithoutRoot ? repoDirWithoutRoot + '/' + file : file), 'id')
+				};
+
+				allFiles.push(t);
+			});
+
+			win.webContents.send('fileList', allFiles);
+		});
+	});
+};
 
 function createWindow() {
 	// Create the browser window.
@@ -105,40 +141,32 @@ function createWindow() {
 	});
 
 	win.webContents.on('did-finish-load', () => {
-		win.webContents.send('repoDir', repoDir);
-
-		getLfsFileList(repoDir, (err, files) => {
-			if (err) {
-				console.error(err);
-
-				win.webContents.send('isNoGitLfsRepo', repoDir);
-				return;
-			}
-			getLfsLocks(repoDir, (err, lockedFiles) => {
-				if (err) {
-					console.error(err);
-
-					win.webContents.send('isNoGitLfsRepo', repoDir);
-					return;
-				}
-				let allFiles = [];
-				let repoDirWithoutRoot = repoDir === repoRootDir ? '' : repoDir.replace(path.normalize(repoRootDir + '/'), '');
-
-				files.forEach((file) => {
-					const t = {
-						file: file,
-						lockedBy: getArrayObjectByKey(lockedFiles, 'file', path.normalize(repoDirWithoutRoot ? repoDirWithoutRoot + '/' + file : file), 'lockedBy'),
-						id: getArrayObjectByKey(lockedFiles, 'file', path.normalize(repoDirWithoutRoot ? repoDirWithoutRoot + '/' + file : file), 'id')
-					};
-
-					allFiles.push(t);
-				});
-
-				win.webContents.send('fileList', allFiles);
-			});
-		});
+		loadRepoPage();
 	});
-}
+};
+
+function startup(cb) {
+	exec('git rev-parse --show-toplevel', {
+		maxBuffer: 1024 * 1024,
+		cwd: repoDir
+	},
+	(error, stdout, stderr) => {
+		if (error) {
+			if (win) {
+				win.webContents.send('isNoGitLfsRepo', repoDir);
+			}
+			console.error(error);
+		}
+
+		if (stdout) {
+			repoRootDir = path.normalize(stdout.replace(/\n/g, ''));
+		}
+
+		if (cb) {
+			cb();
+		}
+	});
+};
 
 ipcMain.on('unlock', (event, file) => {
 	exec('git lfs unlock "' + file + '"', {
@@ -187,22 +215,13 @@ ipcMain.on('lock', (event, file) => {
 	});
 });
 
+ipcMain.on('restart', (event, newRepoDir) => {
+	repoDir = newRepoDir;
+	startup(loadRepoPage);
+});
+
 app.on('ready', () => {
-	exec('git rev-parse --show-toplevel', {
-		maxBuffer: 1024 * 1024,
-		cwd: repoDir
-	},
-	(error, stdout, stderr) => {
-		if (error) {
-			console.error(error);
-		}
-
-		if (stdout) {
-			repoRootDir = path.normalize(stdout.replace(/\n/g, ''));
-		}
-
-		createWindow();
-	});
+	startup(createWindow);
 });
 
 app.on('window-all-closed', function() {

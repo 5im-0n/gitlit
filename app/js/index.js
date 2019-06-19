@@ -9,7 +9,7 @@
 		if (files && files.length > 0) {
 			$('.files-table-container').html(gitlit.templates.files({files: files}));
 			sorttable.makeSortable($('.js-filestable')[0]);
-			var myTH = document.getElementsByTagName("th")[0];
+			var myTH = document.getElementsByTagName('th')[0];
 			sorttable.innerSortFunction.apply(myTH, []);
 		} else {
 			$('.files-table-container').html(gitlit.templates.noGitLfsFiles());
@@ -17,6 +17,7 @@
 	});
 
 	ipcRenderer.on('repoDir', (event, repoDir) => {
+		$('.js-container').html(gitlit.templates.main());
 		$('.js-repo-dir').text('current repo dir: ' + repoDir).show();
 	});
 
@@ -87,8 +88,21 @@
 		}
 	});
 
+	$(document).on('drop', (ev) => {
+		ev.preventDefault();
+		ev.stopPropagation();
+
+		if (ev.originalEvent.dataTransfer.files && ev.originalEvent.dataTransfer.files.length > 0) {
+			ipcRenderer.send('restart', ev.originalEvent.dataTransfer.files[0].path);
+		}
+	});
+
+	$(document).on('dragover', (ev) => {
+		ev.preventDefault();
+		ev.stopPropagation();
+	});
+
 	//startup
 	PNotify.defaults.styling = 'bootstrap4'; // Bootstrap version 4
-	$('.js-container').html(gitlit.templates.main());
 
 })(jQuery);
