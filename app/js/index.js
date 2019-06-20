@@ -7,22 +7,22 @@
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
 		if (files && files.length > 0) {
-			$('.files-table-container').html(gitlit.templates.files({files: files}));
+			$('.files-table-container').html(ejs.rr('templates/files.ejs', {files: files}));
 			sorttable.makeSortable($('.js-filestable')[0]);
 			var myTH = document.getElementsByTagName('th')[0];
 			sorttable.innerSortFunction.apply(myTH, []);
 		} else {
-			$('.files-table-container').html(gitlit.templates.noGitLfsFiles());
+			$('.files-table-container').html(ejs.rr('templates/noGitLfsFiles.ejs'));
 		}
 	});
 
 	ipcRenderer.on('repoDir', (event, repoDir) => {
-		$('.js-container').html(gitlit.templates.main());
+		$('.js-container').html(ejs.rr('templates/main.ejs'));
 		$('.js-repo-dir').text('current repo dir: ' + repoDir).show();
 	});
 
 	ipcRenderer.on('isNoGitLfsRepo', (event, repoDir) => {
-		$('.js-container').html(gitlit.templates.isNoGitLfsRepo({repoDir: repoDir}));
+		$('.js-container').html(ejs.rr('templates/isNoGitLfsRepo.ejs', {repoDir: repoDir}));
 	});
 
 	ipcRenderer.on('notification', (event, notification) => {
@@ -74,6 +74,16 @@
 	$(document).on('click', '.js-refresh', (ev) => {
 		ev.preventDefault();
 		window.location.reload(false);
+	});
+
+	$(document).on('click', '.js-open-folder', (ev) => {
+		ev.preventDefault();
+		$('.js-open-folder-input').trigger('click');
+	});
+
+	$(document).on('change', '.js-open-folder-input', (ev) => {
+		ev.preventDefault();
+		ipcRenderer.send('restart', $('.js-open-folder-input')[0].files[0].path);
 	});
 
 	$(document).on('keypress', (ev) => {
