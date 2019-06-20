@@ -7,18 +7,24 @@
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
 		if (files && files.length > 0) {
-			$('.files-table-container').html(ejs.rr('templates/files.ejs', {files: files}));
-			sorttable.makeSortable($('.js-filestable')[0]);
-			var myTH = document.getElementsByTagName('th')[0];
-			sorttable.innerSortFunction.apply(myTH, []);
+			ejs.preloadTemplate('templates/files.ejs')
+			.then(t => {
+				$('.files-table-container').html(ejs.rr(t, {files: files}));
+				sorttable.makeSortable($('.js-filestable')[0]);
+				var myTH = document.getElementsByTagName('th')[0];
+				sorttable.innerSortFunction.apply(myTH, []);
+			});
 		} else {
 			$('.files-table-container').html(ejs.rr('templates/noGitLfsFiles.ejs'));
 		}
 	});
 
 	ipcRenderer.on('repoDir', (event, repoDir) => {
-		$('.js-container').html(ejs.rr('templates/main.ejs'));
-		$('.js-repo-dir').text('current repo dir: ' + repoDir).show();
+		ejs.preloadTemplate('templates/main.ejs')
+		.then(t => {
+			$('.js-container').html(ejs.rr(t));
+			$('.js-repo-dir').text('current repo dir: ' + repoDir).show();
+		});
 	});
 
 	ipcRenderer.on('isNoGitLfsRepo', (event, repoDir) => {
