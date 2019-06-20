@@ -1,7 +1,4 @@
 <div class="alert alert-danger">
 	<%= repoDir %> is not a git lfs repo.
 </div>
-<div class="text-center">
-	<a class="btn btn-primary js-open-folder" href="javascript:///">Open an other folder</a>
-	<input type="file" style="display: none" class="js-open-folder-input" webkitdirectory />
-</div>
+<%- ejs.rr('templates/openFolder.ejs') %>
