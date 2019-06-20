@@ -4,8 +4,11 @@
 	const electronFind = require('electron-find');
 	let findInPage = new electronFind.FindInPage(remote.getCurrentWebContents());
 
+	let firstRun = true;
+
 	//events
 	ipcRenderer.on('fileList', (event, files) => {
+		firstRun = false;
 		if (files && files.length > 0) {
 			ejs.preloadTemplate('templates/files.ejs')
 			.then(t => {
@@ -28,7 +31,12 @@
 	});
 
 	ipcRenderer.on('isNoGitLfsRepo', (event, repoDir) => {
-		$('.js-container').html(ejs.rr('templates/isNoGitLfsRepo.ejs', {repoDir: repoDir}));
+		if (firstRun) {
+			firstRun = false;
+			$('.js-container').html(ejs.rr('templates/firstRun.ejs', {repoDir: repoDir}));
+		} else {
+			$('.js-container').html(ejs.rr('templates/isNoGitLfsRepo.ejs', {repoDir: repoDir}));
+		}
 	});
 
 	ipcRenderer.on('notification', (event, notification) => {
