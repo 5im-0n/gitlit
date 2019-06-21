@@ -2,6 +2,11 @@ html {
     margin-bottom: 10px;
 }
 
+.jumbotron {
+    height: 640px;
+    margin-bottom: 0px;
+}
+
 .js-container {
 	margin: 5px;
 }

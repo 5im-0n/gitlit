@@ -126,7 +126,7 @@ function loadRepoPage() {
 
 function createWindow() {
 	// Create the browser window.
-	win = new BrowserWindow({width: 800, height: 600});
+	win = new BrowserWindow({width: 800, height: 700});
 	win.setMenu(null);
 
 	// and load the index.html of the app.
