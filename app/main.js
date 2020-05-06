@@ -15,7 +15,7 @@ let repoRootDir = repoDir;
 
 function getLfsFileList(dir, cb) {
 	exec('git ls-files | git check-attr --stdin lockable', {
-		maxBuffer: 1024 * 1024,
+		maxBuffer: (1024 * 1024) * 10, //10MB
 		cwd: dir
 	},
 	(error, stdout, stderr) => {
@@ -47,7 +47,7 @@ function getLfsFileList(dir, cb) {
 
 function getLfsLocks(dir, cb) {
 	exec('git lfs locks', {
-		maxBuffer: 1024 * 1024,
+		maxBuffer: (1024 * 1024) * 10, //10MB
 		cwd: dir
 	},
 	(error, stdout, stderr) => {
@@ -147,7 +147,7 @@ function createWindow() {
 
 function startup(cb) {
 	exec('git rev-parse --show-toplevel', {
-		maxBuffer: 1024 * 1024,
+		maxBuffer: (1024 * 1024) * 10, //10MB
 		cwd: repoDir
 	},
 	(error, stdout, stderr) => {
@@ -170,7 +170,7 @@ function startup(cb) {
 
 ipcMain.on('unlock', (event, file) => {
 	exec('git lfs unlock "' + file + '"', {
-		maxBuffer: 1024 * 1024,
+		maxBuffer: (1024 * 1024) * 10, //10MB
 		cwd: repoDir
 	},
 	(error, stdout, stderr) => {
@@ -193,7 +193,7 @@ ipcMain.on('unlock', (event, file) => {
 
 ipcMain.on('lock', (event, file) => {
 	exec('git lfs lock --json "' + file + '"', {
-		maxBuffer: 1024 * 1024,
+		maxBuffer: (1024 * 1024) * 10, //10MB
 		cwd: repoDir
 	},
 	(error, stdout, stderr) => {
