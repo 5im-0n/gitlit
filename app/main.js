@@ -13,6 +13,8 @@ let win;
 let repoDir = path.resolve(path.normalize(args._.join(' ')));
 let repoRootDir = repoDir;
 
+require('update-electron-app')();
+
 function getLfsFileList(dir, cb) {
 	exec('git ls-files | git check-attr --stdin lockable', {
 		maxBuffer: (1024 * 1024) * 10, //10MB

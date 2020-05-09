@@ -38,7 +38,8 @@
     "minimist": "^1.2.5",
     "nonblockjs": "^1.0.8",
     "pnotify": "^4.0.1",
-    "popper.js": "^1.16.1"
+    "popper.js": "^1.16.1",
+    "update-electron-app": "^1.5.0"
   },
   "devDependencies": {
     "electron": "^3.1.13",
