@@ -46,8 +46,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "pack": "electron-builder --linux --win --dir",
-    "dist": "electron-builder --linux --win"
+    "pack": "electron-builder --linux --win portable --dir",
+    "dist": "electron-builder --linux --win portable"
   },
   "repository": {
     "type": "git",
