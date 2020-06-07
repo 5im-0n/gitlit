@@ -23,7 +23,6 @@ setTimeout(() => {
 	});
 
 	gau.onUpdateAvailable = (version, asset) => {
-		console.log('onUpdateAvailable');
 		win.webContents.send('update', {
 			event: 'updateAvailable',
 			version: version
