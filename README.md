@@ -45,6 +45,9 @@ npm install
 npm run dist
 ```
 
+## notes
+Since version 2.0.1 the app auto updates itself.
+
 ## license
 
 ISC
