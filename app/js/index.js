@@ -7,6 +7,31 @@
 	let firstRun = true;
 
 	//events
+
+	//update stuff
+	ipcRenderer.on('update', (event, state) => {
+		if (state.event === 'updateAvailable') {
+			$('.js-updatenotice').text(`New version ${state.version} available. Downloading...`);
+			$('.js-updatenotice').show();
+		}
+
+		if (state.event === 'updateReadyToInstall') {
+			$('.js-updatenotice').text(`New version ready to install. Click here to start installer.`);
+			$('.js-updatenotice').show();
+			$('.js-updatenotice').prop('disabled', false);
+			$('.js-updatenotice').data('file', state.file);
+		}
+	});
+
+	$(document).on('click', '.js-updatenotice', (ev) => {
+		ev.preventDefault();
+		$('.js-updatenotice').prop('disabled', true);
+		$('.js-updatenotice').text(`Launching installer...`);
+		ipcRenderer.send('installUpdate', $('.js-updatenotice').data('file'));
+	});
+	//end update stuff
+
+
 	ipcRenderer.on('fileList', (event, files) => {
 		firstRun = false;
 		if (files && files.length > 0) {

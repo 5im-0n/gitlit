@@ -3,6 +3,7 @@ const path = require('path');
 const url = require('url');
 const electronLocalshortcut = require('electron-localshortcut');
 const exec = require('child_process').exec;
+const gau = require('github-app-updater');
 const args = require('minimist')(process.defaultApp ? process.argv.slice(3) : process.argv.slice(1), {
 	default: {
 		_: process.cwd()
@@ -12,6 +13,40 @@ const args = require('minimist')(process.defaultApp ? process.argv.slice(3) : pr
 let win;
 let repoDir = path.resolve(path.normalize(args._.join(' ')));
 let repoRootDir = repoDir;
+
+//auto update stuff
+setTimeout(() => {
+	gau.checkForUpdate({
+		currentVersion: '1.0.0', //app.getVersion(),
+		repo: 'https://api.github.com/repos/S2-/gitlit/releases/latest',
+		assetMatch: /.+setup.+exe/i
+	});
+
+	gau.onUpdateAvailable = (version, asset) => {
+		console.log('onUpdateAvailable');
+		win.webContents.send('update', {
+			event: 'updateAvailable',
+			version: version
+		});
+		gau.downloadNewVersion(asset);
+	};
+
+	gau.onNewVersionReadyToInstall = (file) => {
+		win.webContents.send('update', {
+			event: 'updateReadyToInstall',
+			file: file
+		});
+	};
+
+	ipcMain.on('installUpdate', (event, file) => {
+		gau.executeUpdate(file);
+		win.webContents.send('update', {
+			event: 'updateInstalling'
+		});
+	});
+}, 5000);
+
+//end update stuff
 
 function getLfsFileList(dir, cb) {
 	exec('git ls-files | git check-attr --stdin lockable', {

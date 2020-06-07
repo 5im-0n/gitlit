@@ -49,3 +49,13 @@ table.sortable thead {
 table.sortable .sorttable_nosort {
     cursor: default;
 }
+
+
+/*
+* updater
+*/
+.updatenotice {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+}
