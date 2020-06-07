@@ -12,6 +12,7 @@
 	ipcRenderer.on('update', (event, state) => {
 		if (state.event === 'updateAvailable') {
 			$('.js-updatenotice').text(`New version ${state.version} available. Downloading...`);
+			$('.js-updatenotice').prop('disabled', true);
 			$('.js-updatenotice').show();
 		}
 
@@ -25,6 +26,9 @@
 
 	$(document).on('click', '.js-updatenotice', (ev) => {
 		ev.preventDefault();
+		if ($('.js-updatenotice').prop('disabled')) {
+			return;
+		}
 		$('.js-updatenotice').prop('disabled', true);
 		$('.js-updatenotice').text(`Launching installer...`);
 		ipcRenderer.send('installUpdate', $('.js-updatenotice').data('file'));
