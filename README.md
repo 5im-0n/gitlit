@@ -46,7 +46,7 @@ npm run dist
 ```
 
 ## notes
-Since version 2.0.1 the app auto updates itself.
+Since version 2.0.1 the app auto updates itself using the [github-app-updater](https://www.npmjs.com/package/github-app-updater).
 
 ## license
 
