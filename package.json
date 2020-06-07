@@ -47,8 +47,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "pack": "electron-builder --linux --win portable nsis --dir",
-    "dist": "electron-builder --linux --win portable nsis"
+    "pack": "electron-builder --linux --win portable nsis --dir --publish=never",
+    "dist": "electron-builder --linux --win portable nsis --publish=never"
   },
   "repository": {
     "type": "git",

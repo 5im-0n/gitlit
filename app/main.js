@@ -17,7 +17,7 @@ let repoRootDir = repoDir;
 //auto update stuff
 setTimeout(() => {
 	gau.checkForUpdate({
-		currentVersion: '1.0.0', //app.getVersion(),
+		currentVersion: app.getVersion(),
 		repo: 'https://api.github.com/repos/S2-/gitlit/releases/latest',
 		assetMatch: /.+setup.+exe/i
 	});
