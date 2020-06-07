@@ -15,35 +15,37 @@ let repoDir = path.resolve(path.normalize(args._.join(' ')));
 let repoRootDir = repoDir;
 
 //auto update stuff
-setTimeout(() => {
-	gau.checkForUpdate({
-		currentVersion: app.getVersion(),
-		repo: 'https://api.github.com/repos/S2-/gitlit/releases/latest',
-		assetMatch: /.+setup.+exe/i
-	});
-
-	gau.onUpdateAvailable = (version, asset) => {
-		win.webContents.send('update', {
-			event: 'updateAvailable',
-			version: version
+if (process.platform === 'win32') {
+	setTimeout(() => {
+		gau.checkForUpdate({
+			currentVersion: app.getVersion(),
+			repo: 'https://api.github.com/repos/S2-/gitlit/releases/latest',
+			assetMatch: /.+setup.+exe/i
 		});
-		gau.downloadNewVersion(asset);
-	};
 
-	gau.onNewVersionReadyToInstall = (file) => {
-		win.webContents.send('update', {
-			event: 'updateReadyToInstall',
-			file: file
-		});
-	};
+		gau.onUpdateAvailable = (version, asset) => {
+			win.webContents.send('update', {
+				event: 'updateAvailable',
+				version: version
+			});
+			gau.downloadNewVersion(asset);
+		};
 
-	ipcMain.on('installUpdate', (event, file) => {
-		gau.executeUpdate(file);
-		win.webContents.send('update', {
-			event: 'updateInstalling'
+		gau.onNewVersionReadyToInstall = (file) => {
+			win.webContents.send('update', {
+				event: 'updateReadyToInstall',
+				file: file
+			});
+		};
+
+		ipcMain.on('installUpdate', (event, file) => {
+			gau.executeUpdate(file);
+			win.webContents.send('update', {
+				event: 'updateInstalling'
+			});
 		});
-	});
-}, 5000);
+	}, 5000);
+}
 
 //end update stuff
 
