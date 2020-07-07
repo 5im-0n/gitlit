@@ -43,6 +43,7 @@ if (process.platform === 'win32') {
 			win.webContents.send('update', {
 				event: 'updateInstalling'
 			});
+			app.quit();
 		});
 	}, 5000);
 }
@@ -266,10 +267,4 @@ ipcMain.on('restart', (event, newRepoDir) => {
 
 app.on('ready', () => {
 	startup(createWindow);
-});
-
-app.on('window-all-closed', function() {
-	if (process.platform != 'darwin') {
-		app.quit();
-	}
 });
