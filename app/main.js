@@ -162,7 +162,15 @@ function loadRepoPage() {
 
 function createWindow() {
 	// Create the browser window.
-	win = new BrowserWindow({title: 'gitlit v' + app.getVersion(), width: 800, height: 700});
+	win = new BrowserWindow({
+		title: 'gitlit v' + app.getVersion(),
+		width: 800,
+		height: 700,
+		webPreferences: {
+			nodeIntegration: true,
+			enableRemoteModule: true
+		}
+	});
 	win.setMenu(null);
 
 	// and load the index.html of the app.

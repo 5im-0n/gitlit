@@ -2,6 +2,8 @@
 	const ipcRenderer = require('electron').ipcRenderer;
 	const remote = require('electron').remote;
 	const electronFind = require('electron-find');
+	const dialog = remote.require('electron').dialog;
+
 	let findInPage = new electronFind.FindInPage(remote.getCurrentWebContents());
 
 	let firstRun = true;
@@ -121,12 +123,15 @@
 
 	$(document).on('click', '.js-open-folder', (ev) => {
 		ev.preventDefault();
-		$('.js-open-folder-input').trigger('click');
-	});
 
-	$(document).on('change', '.js-open-folder-input', (ev) => {
-		ev.preventDefault();
-		ipcRenderer.send('restart', $('.js-open-folder-input')[0].files[0].path);
+		dialog.showOpenDialog({
+			properties: ['openDirectory']
+		})
+		.then((path) => {
+			if (path && path.filePaths.length > 0) {
+				ipcRenderer.send('restart', path.filePaths[0]);
+			};
+		});
 	});
 
 	$(document).on('keypress', (ev) => {
