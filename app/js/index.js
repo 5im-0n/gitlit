@@ -13,15 +13,18 @@
 	//update stuff
 	ipcRenderer.on('update', (event, state) => {
 		if (state.event === 'updateAvailable') {
-			$('.js-updatenotice').text(`New version ${state.version} available. Downloading...`);
-			$('.js-updatenotice').prop('disabled', true);
+			$('.js-updatenotice').text(`New version ${state.version} available. Click here to download.`);
 			$('.js-updatenotice').show();
+			$('.js-updatenotice').prop('disabled', false);
+			$('.js-updatenotice').prop('state', 'ready-to-download');
+			$('.js-updatenotice').data('asset', state.asset);
 		}
 
 		if (state.event === 'updateReadyToInstall') {
 			$('.js-updatenotice').text(`New version ready to install. Click here to start installer.`);
 			$('.js-updatenotice').show();
 			$('.js-updatenotice').prop('disabled', false);
+			$('.js-updatenotice').prop('state', 'ready-to-install');
 			$('.js-updatenotice').data('file', state.file);
 		}
 	});
@@ -31,9 +34,16 @@
 		if ($('.js-updatenotice').prop('disabled')) {
 			return;
 		}
-		$('.js-updatenotice').prop('disabled', true);
-		$('.js-updatenotice').text(`Launching installer...`);
-		ipcRenderer.send('installUpdate', $('.js-updatenotice').data('file'));
+
+		if ($('.js-updatenotice').prop('state') === 'ready-to-download') {
+			$('.js-updatenotice').prop('disabled', true);
+			$('.js-updatenotice').text(`Downloading new version...`);
+			ipcRenderer.send('downloadUpdate', $('.js-updatenotice').data('asset'));
+		} else if ($('.js-updatenotice').prop('state') === 'ready-to-install') {
+			$('.js-updatenotice').prop('disabled', true);
+			$('.js-updatenotice').text(`Launching installer...`);
+			ipcRenderer.send('installUpdate', $('.js-updatenotice').data('file'));
+		}
 	});
 	//end update stuff
 

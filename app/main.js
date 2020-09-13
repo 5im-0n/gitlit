@@ -26,9 +26,9 @@ if (process.platform === 'win32') {
 		gau.onUpdateAvailable = (version, asset) => {
 			win.webContents.send('update', {
 				event: 'updateAvailable',
-				version: version
+				version: version,
+				asset: asset
 			});
-			gau.downloadNewVersion(asset);
 		};
 
 		gau.onNewVersionReadyToInstall = (file) => {
@@ -37,6 +37,10 @@ if (process.platform === 'win32') {
 				file: file
 			});
 		};
+
+		ipcMain.on('downloadUpdate', (event, asset) => {
+			gau.downloadNewVersion(asset);
+		});
 
 		ipcMain.on('installUpdate', (event, file) => {
 			gau.executeUpdate(file);
