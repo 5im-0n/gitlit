@@ -3,6 +3,7 @@
 	const remote = require('electron').remote;
 	const electronFind = require('electron-find');
 	const dialog = remote.require('electron').dialog;
+	const shell = require('electron').shell;
 
 	let findInPage = new electronFind.FindInPage(remote.getCurrentWebContents());
 
@@ -142,6 +143,11 @@
 				ipcRenderer.send('restart', path.filePaths[0]);
 			};
 		});
+	});
+
+	$(document).on('click', 'a[href^="http"]', function(event) {
+		event.preventDefault();
+		shell.openExternal(this.href);
 	});
 
 	$(document).on('keypress', (ev) => {
