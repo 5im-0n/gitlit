@@ -29,12 +29,12 @@
   "dependencies": {
     "animate.css": "^4.1.1",
     "bootstrap": "^4.6.0",
-    "ejs": "^3.1.5",
+    "ejs": "^3.1.6",
     "ejs-render-remote": "^1.0.13",
     "electron-find": "^1.0.6",
     "electron-localshortcut": "^3.2.1",
     "github-app-updater": "^1.0.5",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.0",
     "material-design-icons": "^3.0.1",
     "minimist": "^1.2.5",
     "nonblockjs": "^1.0.8",
@@ -42,8 +42,8 @@
     "popper.js": "^1.16.1"
   },
   "devDependencies": {
-    "electron": "^11.2.1",
-    "electron-builder": "^22.9.1"
+    "electron": "^11.4.5",
+    "electron-builder": "^22.11.1"
   },
   "scripts": {
     "start": "electron .",
